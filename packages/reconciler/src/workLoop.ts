@@ -32,7 +32,9 @@ export const renderRoot = (root: FiberRootNode) => {
       workLoop();
     } catch (e) {
       workInProgress = null;
-      console.warn("workLoop发生错误");
+      if (__DEV__) {
+        console.warn("workLoop发生错误");
+      }
       break;
     }
   }
