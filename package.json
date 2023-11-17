@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "prettier": "prettier --write ./packages",
     "lint": "eslint --ext .js,.ts,.jsx,.tsx --fix --quiet ./packages",
     "build:dev": "rollup --bundleConfigAsCjs --config scripts/rollup/react.config.js "
   },

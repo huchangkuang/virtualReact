@@ -8,63 +8,67 @@ function ChildReconciler(shouldTrackEffect: boolean) {
   function reconcileSingleElement(
     returnFiber: FiberNode,
     currentFiber: FiberNode | null,
-    element: ReactElementType
+    element: ReactElementType,
   ) {
-    const fiber = createFiberFromElement(element)
-    fiber.return = returnFiber
-    return fiber
+    const fiber = createFiberFromElement(element);
+    fiber.return = returnFiber;
+    return fiber;
   }
   function reconcileSingleTextNode(
     returnFiber: FiberNode,
     currentFiber: FiberNode | null,
-    content: string | number
+    content: string | number,
   ) {
-    const fiber = new FiberNode(HostText, {content}, null)
-    fiber.return = returnFiber
-    return fiber
+    const fiber = new FiberNode(HostText, { content }, null);
+    fiber.return = returnFiber;
+    return fiber;
   }
   function placeSingleChild(fiber: FiberNode) {
     if (shouldTrackEffect && fiber.alternate === null) {
-      fiber.flags |= Placement
+      fiber.flags |= Placement;
     }
-    return fiber
+    return fiber;
   }
 
   return function reconcileChildFibers(
     returnFiber: FiberNode,
     currentFiber: FiberNode | null,
-    newChild?: ReactElementType | string | number
+    newChild?: ReactElementType | string | number,
   ) {
-    if (typeof newChild === 'object' && newChild !== null) {
+    if (typeof newChild === "object" && newChild !== null) {
       switch (newChild.$$typeof) {
         case REACT_ELEMENT_TYPE:
-          return placeSingleChild(reconcileSingleElement(returnFiber, currentFiber, newChild))
+          return placeSingleChild(
+            reconcileSingleElement(returnFiber, currentFiber, newChild),
+          );
         default:
           if (__DEV__) {
-            console.warn(`未定义的reconcile类型：${newChild}`)
+            console.warn(`未定义的reconcile类型：${newChild}`);
           }
           break;
       }
     }
 
-    if (typeof newChild === 'string' || typeof newChild  === 'number') {
-      return placeSingleChild(reconcileSingleTextNode(returnFiber, currentFiber, newChild))
+    if (typeof newChild === "string" || typeof newChild === "number") {
+      return placeSingleChild(
+        reconcileSingleTextNode(returnFiber, currentFiber, newChild),
+      );
     }
 
-    return null
-  }
+    return null;
+  };
 }
-function createFiberFromElement(element: ReactElementType, ) {
-  const {type, props, key} = element
-  let fiberTag: WorkTag = FunctionComponent
-  if (typeof type === 'string') {
-    fiberTag = HostComponent
-  } else if (typeof type === 'function' && __DEV__) {
-    console.warn('未定义的type类型', element)
+function createFiberFromElement(element: ReactElementType) {
+  const { type, props, key } = element;
+  let fiberTag: WorkTag = FunctionComponent;
+  if (typeof type === "string") {
+    fiberTag = HostComponent;
+  } else if (typeof type === "function" && __DEV__) {
+    console.warn("未定义的type类型", element);
   }
-  const fiber = new FiberNode(fiberTag, props, key)
-  fiber.type = type
-  return fiber
+  const fiber = new FiberNode(fiberTag, props, key);
+  fiber.type = type;
+  return fiber;
 }
-export const reconcileChildFibers = ChildReconciler(true)
-export const mountChildFibers = ChildReconciler(false)
+export const reconcileChildFibers = ChildReconciler(true);
+export const mountChildFibers = ChildReconciler(false);
