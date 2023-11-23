@@ -2,8 +2,10 @@ import { FiberNode } from "./fiber";
 import { HostComponent, HostRoot, HostText } from "./workTag";
 import {
   appendInitialChild,
+  Container,
   createInstance,
   createTextInstance,
+  Instance,
 } from "hostConfig";
 import { NoFlags } from "./fiberFlags";
 
@@ -17,7 +19,7 @@ export const completeWork = (wip: FiberNode) => {
         // update
       } else {
         // 构建DOM
-        const instance = createInstance(wip.type, newProps);
+        const instance = createInstance(wip.type);
         // 将DOM插入到DOM树中
         appendAllChildren(instance, wip);
       }
@@ -44,7 +46,7 @@ export const completeWork = (wip: FiberNode) => {
   }
 };
 
-function appendAllChildren(parent: FiberNode, wip: FiberNode) {
+function appendAllChildren(parent: Instance | Container, wip: FiberNode) {
   let node = wip.child;
 
   while (node !== null) {

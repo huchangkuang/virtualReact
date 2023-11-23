@@ -1,5 +1,5 @@
-export type Container = any;
-export type Instance = any;
+export type Container = Element;
+export type Instance = Element;
 
 export const createInstance = (type: string): Instance => {
   // todo process props
