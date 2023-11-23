@@ -10,11 +10,18 @@ const pkgDistPath = resolvePkgPath(name, true)
 export default [
   {
     input:  path.join(pkgPath, module),
-    output: {
-      file: `${pkgDistPath}/index.js`,
-      name: 'index.js',
-      format: 'umd'
-    },
+    output: [
+      {
+        file: `${pkgDistPath}/index.js`,
+        name: 'index.js',
+        format: 'umd'
+      },
+      {
+        file: `${pkgDistPath}/client.js`,
+        name: 'client.js',
+        format: 'umd'
+      }
+    ],
     plugins: [...getBaseRollupPlugins(), generatePackageJson({
       inputFolder: pkgPath,
       outputFolder: pkgDistPath,
