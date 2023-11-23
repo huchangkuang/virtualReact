@@ -16,7 +16,7 @@
     "skipLibCheck": true,
     "baseUrl": "./packages",
     "paths": {
-      "hostConfig": ["./reconciler/src/hostConfig"]
+      "hostConfig": ["./react-dom/src/hostConfig"]
     }
   }
 }

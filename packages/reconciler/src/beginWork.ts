@@ -16,7 +16,7 @@ export const beginWork = (wip: FiberNode) => {
       if (__DEV__) {
         console.warn(`未定义的type类型:${wip.type}`);
       }
-      break;
+      return null;
   }
 };
 

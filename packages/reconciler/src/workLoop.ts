@@ -38,6 +38,16 @@ export const renderRoot = (root: FiberRootNode) => {
       break;
     }
   }
+
+  const finishedWork = root.finishedWork;
+
+  if (finishedWork) {
+    commitRoot(finishedWork);
+  }
+};
+
+const commitRoot = (finishedWork: FiberNode) => {
+  console.log(finishedWork);
 };
 
 export const workLoop = () => {
