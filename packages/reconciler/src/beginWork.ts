@@ -5,7 +5,7 @@ import { ReactElementType } from "shared/ReactTypes";
 import { mountChildFibers, reconcileChildFibers } from "./childFibers";
 
 export const beginWork = (wip: FiberNode) => {
-  switch (wip.type) {
+  switch (wip.tag) {
     case HostRoot:
       return updateHostRoot(wip);
     case HostComponent:
@@ -14,7 +14,7 @@ export const beginWork = (wip: FiberNode) => {
       return null;
     default:
       if (__DEV__) {
-        console.warn(`未定义的type类型:${wip.type}`);
+        console.warn(`未定义的tag类型:${wip.tag}`);
       }
       return null;
   }

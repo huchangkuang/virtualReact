@@ -29,7 +29,7 @@ const markUpdateFromFiberRoot = (fiber: FiberNode) => {
 export const renderRoot = (root: FiberRootNode) => {
   prepareFreshStack(root);
 
-  while (true) {
+  while (workInProgress !== null) {
     try {
       workLoop();
     } catch (e) {

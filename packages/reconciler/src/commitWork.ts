@@ -62,7 +62,7 @@ const getHostParent = (fiber: FiberNode) => {
     }
     parent = parent.return;
   }
-  if (__DEV__) {
+  if (__DEV__ && parent === null) {
     console.warn("未找到hostParent", fiber);
   }
 };

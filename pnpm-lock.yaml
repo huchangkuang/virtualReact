@@ -60,6 +60,10 @@ importers:
         specifier: ^5.2.2
         version: 5.2.2
 
+  dist/node_modules/react: {}
+
+  dist/node_modules/react-dom: {}
+
   packages/react:
     dependencies:
       shared:
