@@ -1,3 +1,5 @@
+import * as React from "react";
+
 export type Type = any;
 export type Key = any;
 export type Props = any;
