@@ -1,15 +1,52 @@
-import { FiberNode } from "./fiber";
-import { ReactElementType } from "shared/ReactTypes";
+import { createWorkInProcess, FiberNode } from "./fiber";
+import { Props, ReactElementType } from "shared/ReactTypes";
 import { FunctionComponent, HostComponent, HostText, WorkTag } from "./workTag";
 import { REACT_ELEMENT_TYPE } from "shared/ReactSymbols";
-import { Placement } from "./fiberFlags";
+import { ChildDeletion, Placement } from "./fiberFlags";
 
 function ChildReconciler(shouldTrackEffect: boolean) {
+  function deleteChild(returnFiber: FiberNode, childToDelete: FiberNode) {
+    if (!shouldTrackEffect) {
+      return;
+    }
+    const deletions = returnFiber.deletions;
+    if (deletions === null) {
+      returnFiber.deletions = [childToDelete];
+      returnFiber.flags |= ChildDeletion;
+    } else {
+      deletions.push(childToDelete);
+    }
+  }
   function reconcileSingleElement(
     returnFiber: FiberNode,
     currentFiber: FiberNode | null,
     element: ReactElementType,
   ) {
+    const key = element.key;
+    work: if (currentFiber !== null) {
+      // update
+      if (currentFiber.key === key) {
+        // same key
+        if (element.$$typeof === REACT_ELEMENT_TYPE) {
+          // same type
+          if (currentFiber.type === element.type) {
+            const existing = useFiber(currentFiber, element.props);
+            existing.return = returnFiber;
+            return existing;
+          }
+          // delete old
+          deleteChild(returnFiber, currentFiber);
+          break work;
+        } else {
+          if (__DEV__) {
+            console.warn("还未实现的React类型", element);
+            break work;
+          }
+        }
+      } else {
+        deleteChild(returnFiber, currentFiber);
+      }
+    }
     const fiber = createFiberFromElement(element);
     fiber.return = returnFiber;
     return fiber;
@@ -71,6 +108,12 @@ function createFiberFromElement(element: ReactElementType) {
   const fiber = new FiberNode(fiberTag, props, key);
   fiber.type = type;
   return fiber;
+}
+function useFiber(fiber: FiberNode, pendingProps: Props): FiberNode {
+  const clone = createWorkInProcess(fiber, pendingProps);
+  clone.index = 0;
+  clone.sibling = null;
+  return clone;
 }
 export const reconcileChildFibers = ChildReconciler(true);
 export const mountChildFibers = ChildReconciler(false);
