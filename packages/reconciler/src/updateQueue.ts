@@ -17,13 +17,13 @@ export const createUpdate = <State>(
     action,
   };
 };
-export const createUpdateQueue = <State>() => {
+export const createUpdateQueue = <State>(): UpdateQueue<State> => {
   return {
     shared: {
       pending: null,
     },
     dispatch: null,
-  } as UpdateQueue<State>;
+  };
 };
 
 export const enqueueUpdate = <State>(
