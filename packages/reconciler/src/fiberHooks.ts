@@ -6,7 +6,7 @@ import {
   enqueueUpdate,
   UpdateQueue,
 } from "./updateQueue";
-import { Action, ReactElementType } from "shared/ReactTypes";
+import { Action } from "shared/ReactTypes";
 import { scheduleUpdateOnFiber } from "./workLoop";
 import { Dispatch, Dispatcher } from "react/src/currentDispatcher";
 
@@ -36,10 +36,11 @@ export const renderWithHooks = (wip: FiberNode) => {
 
   const Component = wip.type;
   const props = wip.pendingProps;
+  const children = Component(props);
 
   // 重置
   currentlyRenderingFiber = null;
-  return Component(props);
+  return children;
 };
 
 const HooksDispatcherOnMount: Dispatcher = {
