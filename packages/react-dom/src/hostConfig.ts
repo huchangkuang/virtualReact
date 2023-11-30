@@ -22,3 +22,9 @@ export const appendChildToContainer = appendInitialChild;
 export const updateTextInstance = (element: TextInstance, text: string) => {
   element.textContent = text;
 };
+export const removeChild = (
+  child: Instance | TextInstance,
+  container: Container,
+) => {
+  container.removeChild(child);
+};
