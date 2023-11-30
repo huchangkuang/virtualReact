@@ -11,6 +11,7 @@ import {
   createInstance,
   createTextInstance,
   Instance,
+  updateTextInstance,
 } from "hostConfig";
 import { NoFlags, Update } from "./fiberFlags";
 
@@ -42,6 +43,7 @@ export const completeWork = (wip: FiberNode) => {
         const newText = newProps.content;
         if (oldText !== newText) {
           markUpdate(wip);
+          updateTextInstance(wip.stateNode, newText);
         }
       } else {
         // 构建DOM

@@ -1,5 +1,11 @@
 import { FiberNode } from "./fiber";
-import { MutationMask, NoFlags, Placement } from "./fiberFlags";
+import {
+  ChildDeletion,
+  MutationMask,
+  NoFlags,
+  Placement,
+  Update,
+} from "./fiberFlags";
 import { appendChildToContainer, Container } from "hostConfig";
 import { HostComponent, HostRoot, HostText } from "./workTag";
 
@@ -36,6 +42,14 @@ export const commitMutationEffectsOnFiber = (finishedWork: FiberNode) => {
     commitPlacement(finishedWork);
     finishedWork.flags &= ~Placement;
   }
+  if ((flags & Update) !== NoFlags) {
+    commitUpdate(finishedWork);
+    finishedWork.flags &= ~Update;
+  }
+  if ((flags & ChildDeletion) !== NoFlags) {
+    commitChildDeletion(finishedWork);
+    finishedWork.flags &= ~ChildDeletion;
+  }
 };
 
 export const commitPlacement = (finishedWork: FiberNode) => {
@@ -47,6 +61,8 @@ export const commitPlacement = (finishedWork: FiberNode) => {
     appendPlacementNodeIntoContainer(finishedWork, hostParent);
   }
 };
+export const commitUpdate = (finishedWork: FiberNode) => {};
+export const commitChildDeletion = (finishedWork: FiberNode) => {};
 
 const getHostParent = (fiber: FiberNode) => {
   let parent = fiber.return;
