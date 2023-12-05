@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "description": "react协调器",
   "dependencies": {
-    "shared": "workspace:*"
+    "shared": "workspace:*",
+    "react-dom": "workspace:*"
   },
   "keywords": [],
   "author": "",
