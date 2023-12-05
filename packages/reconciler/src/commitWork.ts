@@ -143,7 +143,7 @@ function commitNestedComponent(
     if (node === root) {
       return;
     }
-    while (node.sibling === null) {
+    while (node.sibling !== null) {
       if (node.return === null || node.return === root) {
         return;
       }
