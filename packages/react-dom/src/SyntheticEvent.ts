@@ -13,7 +13,6 @@ export interface Paths {
 }
 interface SyntheticEvent extends Event {
   __stopPropagation: boolean;
-  stopPropagation: Event["stopPropagation"];
 }
 export function updateFiberProps(node: DOMElement, props: Props) {
   node[elementPropsKey] = props;

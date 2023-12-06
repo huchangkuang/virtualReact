@@ -15,6 +15,7 @@ import {
 } from "hostConfig";
 import { NoFlags, Update } from "./fiberFlags";
 import { updateFiberProps } from "react-dom/src/SyntheticEvent";
+import { Props } from "shared/ReactTypes";
 
 const markUpdate = (fiber: FiberNode) => {
   fiber.flags |= Update;
@@ -31,7 +32,7 @@ export const completeWork = (wip: FiberNode) => {
         // 1.props是否变化
         // 2.变了 Update flag
         // 保存变化后的props
-        updateFiberProps(wip.stateNode, newProps);
+        diffProps(newProps, current.memoizedProps, wip);
       } else {
         // 构建DOM
         const instance = createInstance(wip.type, newProps);
@@ -70,6 +71,29 @@ export const completeWork = (wip: FiberNode) => {
       break;
   }
 };
+
+function diffProps(newProps: Props, oldProps: Props, wip: FiberNode) {
+  if (newProps.length !== oldProps.length) {
+    updateProps(wip, newProps);
+    return;
+  }
+  const keys = Object.keys(newProps);
+  for (let i = 0; i < keys.length; i++) {
+    const key = keys[i];
+    const oldProp = oldProps[key];
+    const newProp = newProps[key];
+    if (!oldProp || oldProp !== newProp) {
+      updateProps(wip, newProps);
+      break;
+    }
+  }
+}
+
+function updateProps(wip: FiberNode, newProps: Props) {
+  markUpdate(wip);
+  wip.memoizedProps = newProps;
+  updateFiberProps(wip.stateNode, newProps);
+}
 
 function appendAllChildren(parent: Instance | Container, wip: FiberNode) {
   let node = wip.child;

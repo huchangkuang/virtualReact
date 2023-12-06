@@ -79,6 +79,8 @@ export const commitPlacement = (finishedWork: FiberNode) => {
 };
 export const commitUpdate = (fiber: FiberNode) => {
   switch (fiber.tag) {
+    case HostComponent:
+      break;
     case HostText:
       const text = fiber.memoizedProps.content;
       commitTextUpdate(fiber.stateNode, text);
